@@ -14,7 +14,7 @@ int main(int argc, char* argv[])
 	}
 	if (strcmp(argv[1], "-h") == 0)
 	{
-        printf("%s\n\n",
+        printf(
             "Basic operations:\n"
             "  OpenIPL-CLI <path> -turn90\n"
             "  OpenIPL-CLI <path> -negative\n"
@@ -33,11 +33,19 @@ int main(int argc, char* argv[])
 
             "Advanced operations:\n"
             "  OpenIPL-CLI <path> -addtext <x> <y> <text> <fontsize> <ttfpath> <r> <g> <b>\n"
-            "    Example: OpenIPL-CLI C:\\Path\\To\\img.png -addtext 256 512 \"Hello\" 24 C:\\arial.ttf 255 255 255\n\n"
-
-            "Resize:\n"
+            "    Example: OpenIPL-CLI C:\\Path\\To\\img.png -addtext 256 512 \"Hello\" 24 C:\\arial.ttf 255 255 255\n"
             "  OpenIPL-CLI <path> -biinterpolation <height> <width>\n"
             "    Example: OpenIPL-CLI C:\\Path\\To\\img.png -biinterpolation 512 512\n"
+            "  OpenIPL-CLI <path> -gauss <iterations>\n"
+            "    Example: OpenIPL-CLI C:\\Path\\To\\img.png -gauss 50\n"
+            "  OpenIPL-CLI <path> -pixelate <scale>\n"
+            "    Example: OpenIPL-CLI C:\\Path\\To\\img.png -pixelate 4\n"
+            "  OpenIPL-CLI <path> -chromaber <bluex> <bluey> <redx> <redy> <threshold>\n"
+            "    Example: OpenIPL-CLI C:\\Path\\To\\img.png -chromaber 5 5 -3 0 0.1\n"
+            "  OpenIPL-CLI <path> -tint <r> <g> <b>\n"
+            "    Example: OpenIPL-CLI C:\\Path\\To\\img.png -tint 1.2 1.0 0.8\n"
+            "  OpenIPL-CLI <path> -vignette <intensity> <curve>\n"
+            "    Example: OpenIPL-CLI C:\\Path\\To\\img.png -vignette 0.8 1.4\n"
         );
         return 0;
 	}
