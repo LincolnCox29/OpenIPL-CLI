@@ -24,6 +24,14 @@ int main(int argc, char* argv[])
 
     if (strcmp(command, "-turn90") == 0)
         callFuncWithoutArgs(OIPL_Turn90, inpath, outpath);
+    if (strcmp(command, "-negative") == 0)
+        callFuncWithoutArgs(OIPL_Negative, inpath, outpath);
+    if (strcmp(command, "-sepia") == 0)
+        callFuncWithoutArgs(OIPL_SepiaFilter, inpath, outpath);
+    if (strcmp(command, "-sharpen") == 0)
+        callFuncWithoutArgs(OIPL_Sharpen, inpath, outpath);
+    if (strcmp(command, "-mirror") == 0)
+        callFuncWithoutArgs(OIPL_ToMirror, inpath, outpath);
     return 0;
 }
 
