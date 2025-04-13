@@ -4,6 +4,8 @@
 #include <ctype.h>
 #include "OIPL/OpenIPL.h"
 
+typedef OIPL_ErrorInfo (*funcWithoutArgs)(const char*);
+
 #define printError(errPtr) (printf("[ERROR] CODE: %d MSG: %s\n", (errPtr)->code, (errPtr)->message))
 
 inline bool argcMinCheck(const int argc);
@@ -16,26 +18,32 @@ int main(int argc, char* argv[])
     if (hFlagCheck(argv))
         return 0;
 
-    if (strcmp(argv[3], "-turn90") == 0)
+    const char* inpath = argv[1];
+    const char* outpath = argv[2];
+    const char* command = argv[3];
+
+    if (strcmp(command, "-turn90") == 0)
+        callFuncWithoutArgs(OIPL_Turn90, inpath, outpath);
+    return 0;
+}
+
+int callFuncWithoutArgs(funcWithoutArgs func, const char* inpath, const char* outpath)
+{
+    OIPL_ErrorInfo err;
+    OIPL_Img* img = OIPL_imgLoad(inpath);
+    err = func(img);
+    if (err.code)
     {
-        const char* inpath = argv[1];
-        const char* outpath = argv[2];
-        OIPL_ErrorInfo err;
-        OIPL_Img* img = OIPL_imgLoad(inpath);
-        err = OIPL_Turn90(img);
-        if (err.code)
-        {
-            OIPL_imgFree(img);
-            printError(&err);
-            return err.code;
-        }
-        err = OIPL_imgWrite(outpath, img);
         OIPL_imgFree(img);
-        if (err.code)
-        {
-            printError(&err);
-            return err.code;
-        }
+        printError(&err);
+        return err.code;
+    }
+    err = OIPL_imgWrite(outpath, img);
+    OIPL_imgFree(img);
+    if (err.code)
+    {
+        printError(&err);
+        return err.code;
     }
     return 0;
 }

@@ -1,2 +1,6 @@
 ﻿  OpenIPL-CLI.c
+D:\Projects\OpenIPL-CLI\OpenIPL-CLI.c(26,9): warning C4013: callFuncWithoutArgs: нет определения; предполагается "extern" с возвратом типа "int"
+D:\Projects\OpenIPL-CLI\OpenIPL-CLI.c(34,16): warning C4133: функция: несовместимые типы - из "OIPL_Img *" в "const char *"
+  LINK : не найден или не выполнена сборка D:\Projects\OpenIPL-CLI\x64\Debug\OpenIPL-CLI.exe при последней инкрементной компоновке; выполняется полная компоновка
+LINK : warning LNK4098: библиотека по умолчанию "MSVCRT" конфликтует с использованием других библиотек; используйте /NODEFAULTLIB:library
   OpenIPL-CLI.vcxproj -> D:\Projects\OpenIPL-CLI\x64\Debug\OpenIPL-CLI.exe
