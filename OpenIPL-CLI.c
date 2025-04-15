@@ -3,10 +3,29 @@
 #include <stdbool.h>
 #include <ctype.h>
 #include "OIPL/OpenIPL.h"
-
-typedef OIPL_ErrorInfo (*funcWithoutArgs)(const char*);
+#include "stdlib.h"
 
 #define printError(errPtr) (printf("[ERROR] CODE: %d MSG: %s\n", (errPtr)->code, (errPtr)->message))
+
+#define CALL_FUNCTION(func, inpath, outpath, ...)          \
+{                                                          \
+    OIPL_Img* img = OIPL_imgLoad(inpath);                  \
+    OIPL_ErrorInfo err = func(img, ##__VA_ARGS__);         \
+    if (err.code)                                          \
+    {                                                      \
+        OIPL_imgFree(img);                                 \
+        printError(&err);                                  \
+        return err.code;                                   \
+    }                                                      \
+    err = OIPL_imgWrite(outpath, img);                     \
+    OIPL_imgFree(img);                                     \
+    if (err.code)                                          \
+    {                                                      \
+        printError(&err);                                  \
+        return err.code;                                   \
+    }                                                      \
+    return 0;                                              \
+}                                                          \
 
 inline bool argcMinCheck(const int argc);
 inline bool hFlagCheck(const char* argv[]);
@@ -23,36 +42,29 @@ int main(int argc, char* argv[])
     const char* command = argv[3];
 
     if (strcmp(command, "-turn90") == 0)
-        callFuncWithoutArgs(OIPL_Turn90, inpath, outpath);
+        CALL_FUNCTION(OIPL_Turn90, inpath, outpath);
     if (strcmp(command, "-negative") == 0)
-        callFuncWithoutArgs(OIPL_Negative, inpath, outpath);
+        CALL_FUNCTION(OIPL_Negative, inpath, outpath);
     if (strcmp(command, "-sepia") == 0)
-        callFuncWithoutArgs(OIPL_SepiaFilter, inpath, outpath);
+        CALL_FUNCTION(OIPL_SepiaFilter, inpath, outpath);
     if (strcmp(command, "-sharpen") == 0)
-        callFuncWithoutArgs(OIPL_Sharpen, inpath, outpath);
+        CALL_FUNCTION(OIPL_Sharpen, inpath, outpath);
     if (strcmp(command, "-mirror") == 0)
-        callFuncWithoutArgs(OIPL_ToMirror, inpath, outpath);
-    return 0;
-}
+        CALL_FUNCTION(OIPL_ToMirror, inpath, outpath);
 
-int callFuncWithoutArgs(funcWithoutArgs func, const char* inpath, const char* outpath)
-{
-    OIPL_ErrorInfo err;
-    OIPL_Img* img = OIPL_imgLoad(inpath);
-    err = func(img);
-    if (err.code)
-    {
-        OIPL_imgFree(img);
-        printError(&err);
-        return err.code;
-    }
-    err = OIPL_imgWrite(outpath, img);
-    OIPL_imgFree(img);
-    if (err.code)
-    {
-        printError(&err);
-        return err.code;
-    }
+    float factor = (float)atof(argv[4]);
+
+    if (strcmp(command, "-bright") == 0);
+        CALL_FUNCTION(OIPL_AdjustBrightness, inpath, outpath, factor);
+    if (strcmp(command, "-contrast") == 0);
+        CALL_FUNCTION(OIPL_AdjustContrast, inpath, outpath, factor);
+    if (strcmp(command, "-grayscale") == 0);
+        CALL_FUNCTION(OIPL_ToGrayscale, inpath, outpath, factor);
+    if (strcmp(command, "-sobel") == 0);
+        CALL_FUNCTION(OIPL_SobelFilter, inpath, outpath, factor);
+    if (strcmp(command, "-blackwhite") == 0);
+        CALL_FUNCTION(OIPL_ToBlackAndWhite, inpath, outpath, factor);
+
     return 0;
 }
 
