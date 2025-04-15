@@ -54,15 +54,15 @@ int main(int argc, char* argv[])
 
     float factor = (float)atof(argv[4]);
 
-    if (strcmp(command, "-bright") == 0);
+    if (strcmp(command, "-bright") == 0)
         CALL_FUNCTION(OIPL_AdjustBrightness, inpath, outpath, factor);
-    if (strcmp(command, "-contrast") == 0);
+    if (strcmp(command, "-contrast") == 0)
         CALL_FUNCTION(OIPL_AdjustContrast, inpath, outpath, factor);
-    if (strcmp(command, "-grayscale") == 0);
+    if (strcmp(command, "-grayscale") == 0)
         CALL_FUNCTION(OIPL_ToGrayscale, inpath, outpath, factor);
-    if (strcmp(command, "-sobel") == 0);
+    if (strcmp(command, "-sobel") == 0)
         CALL_FUNCTION(OIPL_SobelFilter, inpath, outpath, factor);
-    if (strcmp(command, "-blackwhite") == 0);
+    if (strcmp(command, "-blackwhite") == 0)
         CALL_FUNCTION(OIPL_ToBlackAndWhite, inpath, outpath, factor);
 
     return 0;
