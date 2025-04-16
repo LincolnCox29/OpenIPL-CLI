@@ -1,2 +1,2 @@
 @echo off
-start OpenIPL-CLI.exe .\src.png .\out.png -contrast 0.5
+start OpenIPL-CLI.exe .\src.png .\out.png -blackwhite 0.5
