@@ -42,7 +42,7 @@ int main(int argc, char* argv[])
     const char* command = argv[3];
 
     if (strcmp(command, "-turn90") == 0)
-        CALL_FUNCTION(OIPL_Turn90, inpath, outpath);
+        CALL_FUNCTION(OIPL_Turn90, inpath, outpath)
     if (strcmp(command, "-negative") == 0)
         CALL_FUNCTION(OIPL_Negative, inpath, outpath);
     if (strcmp(command, "-sepia") == 0)
@@ -52,7 +52,7 @@ int main(int argc, char* argv[])
     if (strcmp(command, "-mirror") == 0)
         CALL_FUNCTION(OIPL_ToMirror, inpath, outpath);
 
-    float factor = (float)atof(argv[4]);
+    const float factor = (float)atof(argv[4]);
 
     if (strcmp(command, "-bright") == 0)
         CALL_FUNCTION(OIPL_AdjustBrightness, inpath, outpath, factor);
@@ -64,6 +64,20 @@ int main(int argc, char* argv[])
         CALL_FUNCTION(OIPL_SobelFilter, inpath, outpath, factor);
     if (strcmp(command, "-blackwhite") == 0)
         CALL_FUNCTION(OIPL_ToBlackAndWhite, inpath, outpath, factor);
+
+    if (strcmp(command, "-addtext") == 0)
+    {
+        const int x = atoi(argv[4]);
+        const int y = atoi(argv[5]);
+        const char* text = argv[6];
+        const unsigned fontsize = (unsigned)atoi(argv[7]);
+        OIPL_Font* font = OIPL_fontLoad(argv[8]);
+        const int r = atoi(argv[9]);
+        const int g = atoi(argv[10]);
+        const int b = atoi(argv[11]);
+        CALL_FUNCTION(OIPL_AddText, inpath, outpath, x, y, text, fontsize, font, r, g, b);
+        OIPL_fontFree(font);
+    }
 
     return 0;
 }
