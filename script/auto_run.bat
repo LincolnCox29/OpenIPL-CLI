@@ -1,2 +1,2 @@
-@echo off
-start OpenIPL-CLI.exe .\src.png .\out.png -biinterpolation 352 300
+start OpenIPL-CLI.exe .\src.png .\out.png -addtext 85 150 agata 50 .\font.ttf 0 0 0
+pause

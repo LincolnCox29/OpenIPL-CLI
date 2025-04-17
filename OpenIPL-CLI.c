@@ -5,6 +5,8 @@
 #include "OIPL/OpenIPL.h"
 #include "stdlib.h"
 
+#define COMMAND_IS(cmd1, cmd2) (strcmp(cmd1, cmd2) == 0)
+
 #define printError(errPtr) (printf("[ERROR] CODE: %d MSG: %s\n", (errPtr)->code, (errPtr)->message))
 
 #define CALL_FUNCTION(func, inpath, outpath, ...)          \
@@ -27,6 +29,29 @@
     return 0;                                              \
 }                                                          \
 
+#define CALL_ADD_TEXT(inpath, outpath, x, y, text, fontsize, fontpath, r, g, b) \
+{                                                                               \
+    OIPL_Img* img = OIPL_imgLoad(inpath);                                       \
+    OIPL_Font* font = OIPL_fontLoad(fontpath);                                  \
+    OIPL_ErrorInfo err = OIPL_AddText(img, x, y, text, fontsize, font, r, g, b);\
+    if (err.code)                                                               \
+    {                                                                           \
+        OIPL_fontFree(font);                                                    \
+        OIPL_imgFree(img);                                                      \
+        printError(&err);                                                       \
+        return err.code;                                                        \
+    }                                                                           \
+    err = OIPL_imgWrite(outpath, img);                                          \
+    OIPL_fontFree(font);                                                        \
+    OIPL_imgFree(img);                                                          \
+    if (err.code)                                                               \
+    {                                                                           \
+        printError(&err);                                                       \
+        return err.code;                                                        \
+    }                                                                           \
+    return 0;                                                                   \
+}
+
 inline bool argcMinCheck(const int argc);
 inline bool hFlagCheck(const char* argv[]);
 
@@ -41,50 +66,51 @@ int main(int argc, char* argv[])
     const char* outpath = argv[2];
     const char* command = argv[3];
 
-    if (strcmp(command, "-turn90") == 0)
+    if (COMMAND_IS(command ,"-turn90"))
         CALL_FUNCTION(OIPL_Turn90, inpath, outpath)
-    if (strcmp(command, "-negative") == 0)
+    if (COMMAND_IS(command, "-negative"))
         CALL_FUNCTION(OIPL_Negative, inpath, outpath);
-    if (strcmp(command, "-sepia") == 0)
+    if (COMMAND_IS(command, "-sepia"))
         CALL_FUNCTION(OIPL_SepiaFilter, inpath, outpath);
-    if (strcmp(command, "-sharpen") == 0)
+    if (COMMAND_IS(command, "-sharpen"))
         CALL_FUNCTION(OIPL_Sharpen, inpath, outpath);
-    if (strcmp(command, "-mirror") == 0)
+    if (COMMAND_IS(command, "-mirror"))
         CALL_FUNCTION(OIPL_ToMirror, inpath, outpath);
 
     const float factor = (float)atof(argv[4]);
 
-    if (strcmp(command, "-bright") == 0)
+    if (COMMAND_IS(command, "-bright"))
         CALL_FUNCTION(OIPL_AdjustBrightness, inpath, outpath, factor);
-    if (strcmp(command, "-contrast") == 0)
+    if (COMMAND_IS(command, "-contrast"))
         CALL_FUNCTION(OIPL_AdjustContrast, inpath, outpath, factor);
-    if (strcmp(command, "-grayscale") == 0)
+    if (COMMAND_IS(command, "-grayscale"))
         CALL_FUNCTION(OIPL_ToGrayscale, inpath, outpath, factor);
-    if (strcmp(command, "-sobel") == 0)
+    if (COMMAND_IS(command, "-sobel"))
         CALL_FUNCTION(OIPL_SobelFilter, inpath, outpath, factor);
-    if (strcmp(command, "-blackwhite") == 0)
+    if (COMMAND_IS(command, "-blackwhite"))
         CALL_FUNCTION(OIPL_ToBlackAndWhite, inpath, outpath, factor);
 
-    if (strcmp(command, "-addtext") == 0)
+    if (COMMAND_IS(command, "-addtext"))
     {
         const int x = atoi(argv[4]);
         const int y = atoi(argv[5]);
         const char* text = argv[6];
         const unsigned fontsize = (unsigned)atoi(argv[7]);
-        OIPL_Font* font = OIPL_fontLoad(argv[8]);
+        const char* fontpath = argv[8];
         const int r = atoi(argv[9]);
         const int g = atoi(argv[10]);
         const int b = atoi(argv[11]);
-        CALL_FUNCTION(OIPL_AddText, inpath, outpath, x, y, text, fontsize, font, r, g, b);
-        OIPL_fontFree(font);
+        CALL_ADD_TEXT(inpath, outpath, x, y, text, fontsize, fontpath, r, g, b);
     }
 
-    if (strcmp(command, "-biinterpolation") == 0)
+    if (COMMAND_IS(command, "-biinterpolation"))
     {
         const int h = atoi(argv[4]);
         const int w = atoi(argv[5]);
         CALL_FUNCTION(OIPL_BilinearInterpolation, inpath, outpath, h, w);
     }
+
+    printf("[ERROR] Unknown command. Use -h for help.");
 
     return 1;
 }
@@ -112,7 +138,7 @@ inline bool hFlagCheck(const char* argv[])
 
             "Advanced operations:\n"
             "  OpenIPL-CLI <inpath> <outpath> -addtext <x> <y> <text> <fontsize> <ttfpath> <r> <g> <b>\n"
-            "    Example: OpenIPL-CLI C:\\Path\\In\\img.png C:\\Path\\Out\\img.png -addtext 256 512 \"Hello\" 24 C:\\arial.ttf 0 0 0\n"
+            "    Example: OpenIPL-CLI C:\\Path\\In\\img.png C:\\Path\\Out\\img.png -addtext 256 512 Hello 24 C:\\arial.ttf 0 0 0\n"
             "  OpenIPL-CLI <inpath> <outpath> -biinterpolation <height> <width>\n"
             "    Example: OpenIPL-CLI C:\\Path\\In\\img.png C:\\Path\\Out\\img.png -biinterpolation 512 512\n"
             "  OpenIPL-CLI <inpath> <outpath> -gauss <iterations>\n"
