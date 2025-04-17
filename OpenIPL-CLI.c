@@ -79,7 +79,14 @@ int main(int argc, char* argv[])
         OIPL_fontFree(font);
     }
 
-    return 0;
+    if (strcmp(command, "-biinterpolation") == 0)
+    {
+        const int h = atoi(argv[4]);
+        const int w = atoi(argv[5]);
+        CALL_FUNCTION(OIPL_BilinearInterpolation, inpath, outpath, h, w);
+    }
+
+    return 1;
 }
 
 inline bool hFlagCheck(const char* argv[])
