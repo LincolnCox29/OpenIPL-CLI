@@ -116,6 +116,12 @@ int main(int argc, char* argv[])
         CALL_FUNCTION(OIPL_GaussianBlur, inpath, outpath, iterations);
     }
 
+    if (COMMAND_IS(command, "-pixelate"))
+    {
+        const unsigned scale = (unsigned)atoi(argv[4]);
+        CALL_FUNCTION(OIPL_Pixelate, inpath, outpath, scale);
+    }
+
     printf(
         "[ERROR] Unknown command.\n" 
         "Use -h for help.\n");
