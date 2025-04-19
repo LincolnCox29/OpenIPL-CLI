@@ -25,7 +25,7 @@ def main() -> None:
     call_cmd("-addtext", "432 1000 Hello_World 100 ./font.ttf 255 255 255")
     call_cmd("-biinterpolation", "512 512")
     call_cmd("-gauss", "50")
-    call_cmd("-pixelate", "4")
+    call_cmd("-pixelate", "16")
 
 if __name__ == "__main__":
     main()
