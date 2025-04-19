@@ -110,8 +110,15 @@ int main(int argc, char* argv[])
         CALL_FUNCTION(OIPL_BilinearInterpolation, inpath, outpath, h, w);
     }
 
-    printf("[ERROR] Unknown command. Use -h for help.");
+    if (COMMAND_IS(command, "-gauss"))
+    {
+        const unsigned iterations = (unsigned)atoi(argv[4]);
+        CALL_FUNCTION(OIPL_GaussianBlur, inpath, outpath, iterations);
+    }
 
+    printf(
+        "[ERROR] Unknown command.\n" 
+        "Use -h for help.\n");
     return 1;
 }
 
