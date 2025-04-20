@@ -27,6 +27,7 @@ def main() -> None:
     call_cmd("-gauss", "50")
     call_cmd("-pixelate", "16")
     call_cmd("-chromaber", "5 5 0 5 1.0")
+    call_cmd("-tint", "1.2 1.0 0.8")
 
 if __name__ == "__main__":
     main()

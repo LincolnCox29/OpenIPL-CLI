@@ -122,6 +122,24 @@ int main(int argc, char* argv[])
         CALL_FUNCTION(OIPL_Pixelate, inpath, outpath, scale);
     }
 
+    if (COMMAND_IS(command, "-chromaber"))
+    {
+        const int bluex = atoi(argv[4]);
+        const int bluey = atoi(argv[5]);
+        const int redx = atoi(argv[6]);
+        const int redy = atoi(argv[7]);
+        const float threshold = atof(argv[8]);
+        CALL_FUNCTION(OIPL_ChromaticAberration, inpath, outpath, bluex, bluey, redx, redy, threshold);
+    }
+
+    if (COMMAND_IS(command, "-tint"))
+    {
+        const float r = atof(argv[4]);
+        const float g = atof(argv[5]);
+        const float b = atof(argv[6]);
+        CALL_FUNCTION(OIPL_Tint, inpath, outpath, r, g, b);
+    }
+
     printf(
         "[ERROR] Unknown command.\n" 
         "Use -h for help.\n");
