@@ -20,12 +20,13 @@ def main() -> None:
     call_cmd("-bright", "0.5")
     call_cmd("-contrast", "0.5")
     call_cmd("-grayscale", "1.0")
-    call_cmd("-blackwhite", "0.5")
+    call_cmd("-blackwhite", "0.6")
 
     call_cmd("-addtext", "432 1000 Hello_World 100 ./font.ttf 255 255 255")
     call_cmd("-biinterpolation", "512 512")
     call_cmd("-gauss", "50")
     call_cmd("-pixelate", "16")
+    call_cmd("-chromaber", "5 5 0 5 1.0")
 
 if __name__ == "__main__":
     main()
