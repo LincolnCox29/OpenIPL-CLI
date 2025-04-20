@@ -140,6 +140,13 @@ int main(int argc, char* argv[])
         CALL_FUNCTION(OIPL_Tint, inpath, outpath, r, g, b);
     }
 
+    if (COMMAND_IS(command, "-vignette"))
+    {
+        const float intensity = atof(argv[4]);
+        const float curve = atof(argv[5]);
+        CALL_FUNCTION(OIPL_Vignette, inpath, outpath, intensity, curve);
+    }
+
     printf(
         "[ERROR] Unknown command.\n" 
         "Use -h for help.\n");
